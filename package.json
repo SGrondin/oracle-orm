@@ -1,0 +1,28 @@
+{
+  "name": "oracle-orm",
+  "version": "0.0.1",
+  "description": "An Oracle ORM that actually works",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SGrondin/oracle-orm"
+  },
+  "keywords": [
+    "oracle",
+    "orm"
+  ],
+  "author": {
+    "name": "Simon Grondin"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SGrondin/oracle-orm/issues"
+  },
+  "devDependencies":{
+    "coffee-script": "1.7.x",
+    "streamline": "0.10.x"
+  }
+}
