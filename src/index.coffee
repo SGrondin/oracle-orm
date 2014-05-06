@@ -1,7 +1,7 @@
 
-orm = require "./orm"
+ORM = require "./ORM"
 
 
 
 
-module.exports = {orm}
+module.exports = ORM

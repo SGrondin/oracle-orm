@@ -1,5 +1,8 @@
+Query = require "./Query"
+
 class Line
-	constructor: (@connection, @table, @fields) ->
+	constructor: (@connection, @table, @columns) ->
 
 	save: (_) ->
 
+module.exports = Line
