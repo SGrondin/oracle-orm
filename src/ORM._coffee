@@ -10,7 +10,6 @@ class ORM
 				con sql
 				connect.execute sql, args, cb
 		}
-		@
 
 	getModels: (_) ->
 		ret = {}
@@ -24,8 +23,6 @@ class ORM
 
 	execute: (sql, args, _) ->
 		@connection.execute sql, args, _
-
-
 
 
 module.exports = ORM

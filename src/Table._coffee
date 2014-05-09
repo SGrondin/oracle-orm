@@ -1,4 +1,4 @@
-Line = require "./Line"
+Row = require "./Row"
 Query = require "./Query"
 
 class Table
@@ -17,17 +17,18 @@ class Table
 	getById: (IDs, _) ->
 		new Query
 
-	update: (fields, where, _) ->
-		new Query
+	update: (columns={}, where={}, _) ->
+		query = new Query @connection, @name
+		query.update columns, where, _
 
-	del: (where, _) ->
-		new Query
+	del: (where={}, _) ->
+		query = new Query @connection, @name
+		query.del where, _
 
 	count: (_) ->
 		new Query
 
 	drop: (_) ->
-		con @name
-		con @connection.execute "DROP TABLE "+@name, [], _
+		@connection.execute "DROP TABLE "+@name, [], _
 
 module.exports = Table
