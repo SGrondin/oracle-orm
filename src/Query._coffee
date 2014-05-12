@@ -1,20 +1,6 @@
 Row = require "./Row"
 types = require "./types"
-
-placeCounter = 0
-getPlaceholders = (nb) ->
-	(":"+(placeCounter++) for i in [placeCounter..(placeCounter+nb-1)])
-
-getWhereFromObject = (obj) ->
-	where = Object.keys(obj).map((k) -> k+obj[k]).join " AND "
-	if where.length == 0 then "1=1" else where
-
-getUpdateFromObject = (obj) ->
-	if Object.keys(obj).length == 0 then throw new Error "Update needs to update at least one field."
-	Object.keys(obj).map((k) -> k+"="+(getPlaceholders 1)).join ", "
-
-getValues = (obj) ->
-	Object.keys(obj).map (a) -> obj[a]
+helpers = require "./helpers"
 
 class Query
 	constructor: (@connection, @table) ->
@@ -24,21 +10,24 @@ class Query
 			"ORDER BY "+orderBy.join " AND "
 		else
 			""
-		(@connection.execute "SELECT * FROM "+@table+" WHERE "+getWhereFromObject(where)+" "+order, [], _).map (line) =>
+		(@connection.execute "SELECT * FROM "+@table.name+" WHERE "+helpers.getWhere(where)+" "+order, [], _).map (line) =>
 			new Row @connection, @table, line
 
-	update: (columns, where, _) ->
-		where = getWhereFromObject where
-		con getValues columns
-		@connection.execute "UPDATE "+@table+" SET "+(getUpdateFromObject columns)+" WHERE "+where, (getValues columns), _
+	update: (pairs, where, _) ->
+		@connection.execute "UPDATE "+@table.name+" SET "+(helpers.getListPlaceholders pairs, "=").join(", ")+
+			" WHERE "+(helpers.getWhere where), (helpers.getValues pairs), _
+
+	updateWithEquals: (pairs, where, _) ->
+		@connection.execute "UPDATE "+@table.name+" SET "+(helpers.getListPlaceholders pairs, "=").join(", ")+
+			" WHERE "+(helpers.getWhere where, "="), (helpers.getValues pairs), _
 
 	insert: (pairs, _) ->
 		columns = Object.keys pairs
-		values = columns.map (c) -> pairs[c]
-		placeholders = (getPlaceholders values.length).join ", "
-		@connection.execute "INSERT INTO "+@table+"("+columns.join(", ")+") VALUES("+placeholders+")", values, _
+		values = helpers.getValues pairs
+		placeholders = (helpers.getPlaceholders values.length).join ", "
+		@connection.execute "INSERT INTO "+@table.name+"("+columns.join(", ")+") VALUES("+placeholders+")", values, _
 
 	del: (where, _) ->
-		@connection.execute "DELETE FROM "+@table+" WHERE "+getWhereFromObject(where), [], _
+		@connection.execute "DELETE FROM "+@table.name+" WHERE "+helpers.getWhere(where), [], _
 
 module.exports = Query
