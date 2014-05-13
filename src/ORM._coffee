@@ -1,14 +1,16 @@
+oracle = require "oracle"
 Table = require "./Table"
 Column = require "./Column"
 util = require "util"
 types = require "./types"
 
 class ORM
-	constructor: (connect) ->
+	constructor: (connectData, _) ->
+		link = oracle.connect connectData, _
 		@connection = {
 			"execute": (sql, args, cb) ->
 				console.log sql, args
-				connect.execute sql, args, cb
+				link.execute sql, args, cb
 		}
 
 	getModels: (_) ->

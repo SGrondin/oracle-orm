@@ -26,7 +26,7 @@ class Table
 		r = @connection.execute "SELECT COUNT(*) AS C FROM "+@name, [], _
 		r[0].C
 
-	drop: (_) ->
-		@connection.execute "DROP TABLE "+@name, [], _
+	empty: (_) ->
+		@connection.execute "TRUNCATE TABLE "+@name, [], _
 
 module.exports = Table
