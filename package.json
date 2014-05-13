@@ -21,11 +21,9 @@
   "bugs": {
     "url": "https://github.com/SGrondin/oracle-orm/issues"
   },
-  "dependencies":{
-    "oracle":"*"
-  },
   "devDependencies":{
     "coffee-script": "1.7.x",
-    "streamline": "0.10.x"
+    "streamline": "0.10.x",
+    "oracle":"*"
   }
 }
