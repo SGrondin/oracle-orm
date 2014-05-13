@@ -71,12 +71,12 @@ In these examples, USER is a Model.
 
 The USER.columns object contains information about the field types.
 
-#### ADD
+#### add
 ```javascript
 USER.add({"USER_ID":5, "NAME":"JOE SMITH"}, function(err, results){ ... });
 ```
 
-#### GET
+#### get
 ```javascript
 // USER_ID between 5 and 20
 USER.get({"USER_ID":">5", "USER_ID":"<20"}, [], function(err, results){ ... });
@@ -85,32 +85,32 @@ USER.get({"USER_ID":">5", "USER_ID":"<20"}, [], function(err, results){ ... });
 USER.get({}, ["USER_ID ASC", "NAME DESC"], function(err, results){ ... });
 ```
 
-#### ALL
+#### all
 ```javascript
 // Shortcut for .get({}, [], cb);
 // all() returns Units in a non-deterministic order
 USER.all(function(err, results){ ... });
 ```
 
-#### UPDATE
+#### update
 ```javascript
 // Apply change to the whole table
 // Change all "JOE SMITH" with USER_ID greater than 10 to "BOB SMITH"
 USER.update({"NAME":"BOB SMITH"}, {"NAME":"='JOE SMITH'", "USER_ID":">10"}, function(err, results){ ... });
 ```
 
-#### DEL
+#### del
 ```javascript
 // Delete everything with a USER_ID smaller than 5
 USER.del({"USER_ID":"<5"}, function(err, results){ ... });
 ```
 
-#### COUNT
+#### count
 ```javascript
 USER.count(function(err, results){ ... });
 ```
 
-#### EMPTY
+#### empty
 ```javascript
 USER.empty(function(err, results){ ... });
 ```
@@ -118,36 +118,48 @@ USER.empty(function(err, results){ ... });
 
 # Unit
 
-In these examples, user55 is a Unit. Suppose they are executed sequentially.
+#### data
+user.data contains the fields and values of a Unit.
 
-user55.data contains the fields and values of a Unit.
+#### isDirty
+Returns true if the object was modified
+
+#### save
+Writes the dirty (modified) fields to the database.
+
+#### sync
+Refreshes all fields with fresh values from the database.
+
+#### reset
+Brings all fields back to the state they were in when the Unit was created or after the last sync if sync was called at some point.
+
+#### Examples
+
+In these examples, user55 is a Unit. Suppose they are executed sequentially.
 
 ```javascript
 user55.isDirty(); // false
-
 user55.data.NAME = "WILLIAM CAMPBELL";
-
 user55.isDirty(); // true
-
 user55.save(function(err, results){ ... });
-
 user55.isDirty(); // false
-
 console.log(user55.data.NAME); // "WILLIAM CAMPBELL"
 
 user55.data.NAME = "JAMES SMITH";
-
 user55.isDirty(); // true
-
 console.log(user55.data.NAME); // "JAMES SMITH"
-
 user55.sync(function(err, results){ ... });
-
 console.log(user55.data.NAME); // "WILLIAM CAMPBELL"
-
 user55.isDirty(); // false
 
-user55.del(function(err, results){ ... }); // Deleted from the database
+user55.data.NAME = "JAMES SMITH";
+user55.isDirty(); // true
+console.log(user55.data.NAME); // "JAMES SMITH"
+user55.reset(function(err, results){ ... });
+console.log(user55.data.NAME); // "WILLIAM CAMPBELL"
+user55.isDirty(); // false
 
+
+user55.del(function(err, results){ ... }); // Deleted from the database
 user55.del(function(err, results){ ... }); // Uncaught Exception: 'Unit USER was deleted and doesn't exist anymore'
 ```

@@ -41,6 +41,11 @@ class Row
 		@makeBackData()
 		r
 
+	reset: (_) ->
+		@data = @backdata
+		@makeBackData()
+		@data
+
 	del: (_) ->
 		if @deleted then throw new Error "Unit "+@table.name+" was deleted and doesn't exist anymore"
 		pairs = helpers.getPKPairs @

@@ -84,6 +84,13 @@ try
 	# SAVE clean
 	rows[2].save _
 
+	# RESET
+	rows[2].data.BBB = "xyz"
+	rows[2].isDirty() == true or throw new Error "19.2"
+	rows[2].reset _
+	rows[2].data.BBB == "def" or throw new Error "19.3"
+	rows[2].isDirty() == false or throw new Error "19.4"
+
 	# DROP
 	models.PERSON.empty _
 	models.PERSON.count(_) == 0 or throw new Error "20"
