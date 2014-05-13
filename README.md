@@ -14,9 +14,11 @@ It's not even SQL injection-safe, for the most part.
 
 # Install
 
+Don't install from npm yet!
+
 Follow the instructions in [DRIVER_README.md](https://github.com/SGrondin/oracle-orm/blob/master/driver/DRIVER_README.md).
 
-OR install [node-oracle](https://github.com/joeferner/node-oracle) in your project's directory and then run `npm install oracle-orm`.
+OR (not recommended) install [node-oracle](https://github.com/joeferner/node-oracle) in your project's directory and then run `npm install oracle-orm`.
 
 #### Then
 
