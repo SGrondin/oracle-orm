@@ -13,6 +13,6 @@ sudo apt-get install libaio1
 
 npm install oracle-orm
 
-./node_modules/oracle/driver/reinstall.sh
+./node_modules/oracle-orm/driver/reinstall.sh
 
 ```
