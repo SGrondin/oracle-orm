@@ -24,13 +24,12 @@ OR (not recommended) install [node-oracle](https://github.com/joeferner/node-ora
 
 Put the database credentials in node_modules/oracle-orm/testDB.json
 ```
-node node_modules/oracle-orm/lib/unittests.js
+npm test oracle-orm
 ```
 
-# Use
+# Usage
 
 ```javascript
-var oracle = require("oracle");
 var ORM = require("oracle-orm");
 var oracleConnectData = {
 	driver: "oracle"
@@ -40,9 +39,10 @@ var oracleConnectData = {
 	user: "username"
 	password: "password123"
 };
+var debug = true;
 
-oracle.connect(oracleConnectData, function(err, connection){
-	var orm = new ORM(connection);
+new ORM(oracleConnectData, debug, function(err, orm){
+	// do stuff with orm
 };
 ```
 

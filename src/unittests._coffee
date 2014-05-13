@@ -9,7 +9,7 @@ oracleConnectData = JSON.parse (fs.readFileSync __dirname+"/../testDB.json").toS
 ORM = require "oracle-orm"
 
 try
-	orm = new ORM oracleConnectData, _
+	orm = new ORM oracleConnectData, true, _
 
 	# Arbitrary SQL
 	orm.execute "CREATE TABLE PERSON (AAA NUMBER, BBB VARCHAR2(50), CCC VARCHAR2(100))", [], _
@@ -94,6 +94,8 @@ try
 	catch e
 		ok = true
 	finally if not ok then throw new Error "21"
+
+	console.log "\n\nAll tests passed!\n\n"
 
 catch err
 	con err

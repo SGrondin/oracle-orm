@@ -5,11 +5,11 @@ util = require "util"
 types = require "./types"
 
 class ORM
-	constructor: (connectData, _) ->
+	constructor: (connectData, debug=false, _) ->
 		link = oracle.connect connectData, _
 		@connection = {
 			"execute": (sql, args, cb) ->
-				console.log sql, args
+				if debug then console.log sql, args
 				link.execute sql, args, cb
 		}
 
