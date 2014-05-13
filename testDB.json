@@ -1,0 +1,8 @@
+{
+	"driver": "oracle",
+	"hostname": "hostname or IP",
+	"port": 1521,
+	"database": "DB name (SID)",
+	"user": "username",
+	"password": "password123"
+}

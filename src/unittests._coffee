@@ -1,17 +1,11 @@
 util = require "util"
+fs = require "fs"
 global.con = (v) -> util.puts util.inspect v
 global.stack = (err) ->
 	util.puts "__"+err.message
 	util.puts err.stack
 
-oracleConnectData = {
-	driver: "oracle"
-	hostname: "big-data-3.logti.etsmtl.ca" #10.194.32.144
-	port: 1521
-	database: "LOG660"
-	user: "EQUIPE12"
-	password: "e9zVjaaA"
-}
+oracleConnectData = JSON.parse (fs.readFileSync __dirname+"/../testDB.json").toString("utf8")
 ORM = require "oracle-orm"
 
 try

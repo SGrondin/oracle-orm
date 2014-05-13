@@ -5,6 +5,8 @@ Go to your project's directory.
 
 ```bash
 sudo apt-get install libaio1
+# or
+sudo yum install libaio
 
 # Go to http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html
 # Click on Linux x86-64
@@ -14,5 +16,4 @@ sudo apt-get install libaio1
 npm install oracle-orm
 
 ./node_modules/oracle-orm/driver/reinstall.sh
-
 ```

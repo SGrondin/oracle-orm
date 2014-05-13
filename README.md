@@ -20,7 +20,14 @@ Follow the instructions in [DRIVER_README.md](https://github.com/SGrondin/oracle
 
 OR (not recommended) install [node-oracle](https://github.com/joeferner/node-oracle) in your project's directory and then run `npm install oracle-orm`.
 
-#### Then
+#### Run the tests
+
+Put the database credentials in node_modules/oracle-orm/testDB.json
+```
+node node_modules/oracle-orm/lib/unittests.js
+```
+
+# Use
 
 ```javascript
 var oracle = require("oracle");
@@ -29,7 +36,7 @@ var oracleConnectData = {
 	driver: "oracle"
 	hostname: "hostname or IP"
 	port: 1521
-	database: "database name"
+	database: "database name (SID)"
 	user: "username"
 	password: "password123"
 };
@@ -106,7 +113,6 @@ USER.count(function(err, results){ ... });
 #### EMPTY
 ```javascript
 USER.empty(function(err, results){ ... });
-
 ```
 
 
@@ -145,7 +151,3 @@ user55.del(function(err, results){ ... }); // Deleted from the database
 
 user55.del(function(err, results){ ... }); // Uncaught Exception: 'Unit USER was deleted and doesn't exist anymore'
 ```
-
-# Tests
-
-To run the unit tests, copy lib/unittests.js to another directory, then run `npm install oracle-orm` in that directory and finally run `node unittests.js`.
