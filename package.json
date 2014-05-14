@@ -1,6 +1,6 @@
 {
   "name": "oracle-orm",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An Oracle ORM that actually works",
   "main": "lib/index.js",
   "scripts": {

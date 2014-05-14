@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-module=$(dirname $0)
+module=$(pwd)
 pushd $module/../.. > /dev/null
 project=$(pwd)
 popd > /dev/null
