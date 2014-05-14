@@ -14,18 +14,33 @@ It's not even SQL injection-safe, for the most part.
 
 # Install
 
+##### Easy way
+
 Don't install from npm yet!
 
-Follow the instructions in [DRIVER_README.md](https://github.com/SGrondin/oracle-orm/blob/master/driver/DRIVER_README.md).
+First, make sure libaio is installed: `sudo apt-get install libaio1` or `sudo yum install libaio`
 
-OR (not recommended) install [node-oracle](https://github.com/joeferner/node-oracle) in your project's directory and then run `npm install oracle-orm`.
+Then, go to the [Oracle driver page](http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html) and click on Linux x86-64.
+
+Download `instantclient-basic-***.zip` and `instantclient-sdk-***.zip`.
+
+Unzip both into `YOUR_PROJECT/instantclient_12_1`. It won't work if the driver can't be found.
+
+Finally, `npm install oracle-orm` in your project's directory.
+
+
+##### Hard way
+
+`npm install oracle-orm`
+
+Then install [node-oracle](https://github.com/joeferner/node-oracle/blob/master/README.md#basic-installation) in `node_modules/oracle-orm`.
+
+Then, still in `node_modules/oracle-orm`, run `npm install coffee-script` and `npm install streamline`.
 
 #### Run the tests
 
-Put the database credentials in node_modules/oracle-orm/testDB.json
-```
-npm test oracle-orm
-```
+Put the database credentials in `node_modules/oracle-orm/testDB.json` and run `npm test oracle-orm`.
+
 
 # Usage
 
