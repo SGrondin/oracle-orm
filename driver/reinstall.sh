@@ -1,11 +1,12 @@
 #! /usr/bin/env bash
 
 module=$(pwd)
-pushd $module/../.. > /dev/null
-project=$(pwd)
-popd > /dev/null
 
 if [[ -f $module/driver/installed ]]; then
+	exit
+fi
+if [[ ! -d $module/../../instantclient_12_1 ]]; then
+	echo 'Cannot find ../../instantclient_12_1'
 	exit
 fi
 
@@ -22,4 +23,5 @@ echo $OCI_HOME/ | sudo tee /etc/ld.so.conf.d/oracle_instant_client.conf
 sudo ldconfig
 
 touch driver/installed
-npm install
+sleep 3 # Make sure sudo prompt has time to pop up
+npm install # DevDependencies

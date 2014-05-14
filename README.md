@@ -14,8 +14,6 @@ It's not even SQL injection-safe, for the most part.
 
 # Install
 
-##### Easy way
-
 Don't install from npm yet!
 
 First, make sure libaio is installed: `sudo apt-get install libaio1` or `sudo yum install libaio`
@@ -28,14 +26,6 @@ Unzip both into `YOUR_PROJECT/instantclient_12_1`. It won't work if the driver c
 
 Finally, `npm install oracle-orm` in your project's directory.
 
-
-##### Hard way
-
-`npm install oracle-orm`
-
-Then install [node-oracle](https://github.com/joeferner/node-oracle/blob/master/README.md#basic-installation) in `node_modules/oracle-orm`.
-
-Then, still in `node_modules/oracle-orm`, run `npm install coffee-script` and `npm install streamline`.
 
 #### Run the tests
 
