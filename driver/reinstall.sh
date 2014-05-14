@@ -1,8 +1,15 @@
 #! /usr/bin/env bash
 
-DIR=$(dirname $0)
-PWD=$(pwd)
-source $DIR/exports.sh
+module=$(pwd)
+pushd $module/../.. > /dev/null
+project=$(pwd)
+popd > /dev/null
+
+if [[ $module/driver/installed ]]; then
+	exit
+fi
+
+source $module/driver/exports.sh
 
 pushd $OCI_LIB_DIR > /dev/null
 unlink libocci.so
@@ -14,7 +21,7 @@ popd > /dev/null
 echo $OCI_HOME/ | sudo tee /etc/ld.so.conf.d/oracle_instant_client.conf
 sudo ldconfig
 
-pushd $DIR/.. > /dev/null
-rm -r node_modules > /dev/null
-npm install
+pushd $module > /dev/null
+touch driver/installed
+npm install --dev
 popd > /dev/null

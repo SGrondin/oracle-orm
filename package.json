@@ -1,10 +1,11 @@
 {
   "name": "oracle-orm",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An Oracle ORM that actually works",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node lib/unittests.js"
+    "test": "node lib/unittests.js",
+    "preinstall": "./driver/reinstall.sh"
   },
   "repository": {
     "type": "git",

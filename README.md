@@ -133,7 +133,7 @@ Refreshes all fields with fresh values from the database.
 #### reset
 Brings all fields back to the state they were in when the Unit was created or after the last sync if sync was called at some point.
 
-#### Examples
+### Examples
 
 In these examples, user55 is a Unit. Suppose they are executed sequentially.
 
