@@ -12,7 +12,7 @@ fi
 echo 'Compiling oracle-orm...'
 
 node_modules/streamline/bin/_coffee -c src/
-rm lib/*.js
+rm lib/*.js > /dev/null
 mv src/*.js lib/
 
 popd > /dev/null

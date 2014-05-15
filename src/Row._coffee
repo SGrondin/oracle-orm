@@ -26,20 +26,29 @@ class Row
 		dirty = @getDirty()
 		if Object.keys(dirty).length == 0 then return []
 		where = (helpers.getWhere (helpers.getPKPairs @), "=")
-		r = (@connection.execute "UPDATE "+@table.name+" SET "+(helpers.getListPlaceholders dirty, "=").join(", ")+
+		r = (@connection.execute "UPDATE \""+@table.name+"\" SET "+(helpers.getListPlaceholders dirty, "=").join(", ")+
 			" WHERE "+where, (helpers.getValues dirty), _)
-		@backdata = @data
-		@makeBackData()
-		r
+		if r.updateCount == 0
+			@deleted = true
+			@data = {}
+			throw new Error "Unit "+@table.name+" was deleted and doesn't exist anymore"
+		else
+			@makeBackData()
+		@
 
 	sync: (_) ->
 		if @deleted then throw new Error "Unit "+@table.name+" was deleted and doesn't exist anymore"
 		pairs = helpers.getPKPairs @
 		where = (helpers.getListPlaceholders pairs, "=").join " AND "
-		r = @connection.execute "SELECT * FROM "+@table.name+" WHERE "+where, (helpers.getValues pairs), _
-		@data = r[0]
+		r = @connection.execute "SELECT * FROM \""+@table.name+"\" WHERE "+where, (helpers.getValues pairs), _
+		if r.length == 0
+			@deleted = true
+			@data = {}
+			throw new Error "Unit "+@table.name+" was deleted and doesn't exist anymore"
+		else
+			@data = r[0]
 		@makeBackData()
-		r
+		@
 
 	reset: (_) ->
 		@data = @backdata
@@ -51,6 +60,6 @@ class Row
 		pairs = helpers.getPKPairs @
 		where = (helpers.getListPlaceholders pairs, "=").join " AND "
 		@deleted = true
-		@connection.execute "DELETE FROM "+@table.name+" WHERE "+where, (helpers.getValues pairs), _
+		@connection.execute "DELETE FROM \""+@table.name+"\" WHERE "+where, (helpers.getValues pairs), _
 
 module.exports = Row

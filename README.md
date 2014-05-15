@@ -20,11 +20,11 @@ First, make sure libaio is installed: `sudo apt-get install libaio1` or `sudo yu
 
 Then, go to the [Oracle driver page](http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html) and click on Linux x86-64.
 
-Download `instantclient-basic-***.zip` and `instantclient-sdk-***.zip`.
+Download `instantclient-basic-linux.x64-12.1.***.zip` and `instantclient-sdk-linux.x64-12.1.***.zip`.
 
 Unzip both into `YOUR_PROJECT/instantclient_12_1`. It won't work if the driver can't be found.
 
-Finally, `npm install oracle-orm` in your project's directory.
+Finally, `npm install oracle-orm` in your project's directory. The install scripts take care of everything.
 
 
 #### Run the tests
@@ -47,9 +47,13 @@ var oracleConnectData = {
 var debug = true;
 
 new ORM(oracleConnectData, debug, function(err, orm){
-	// do stuff with orm
-};
+	orm.getModels(function(err, models){
+		// do stuff with the models
+	});
+});
 ```
+
+Due to the very callback-heavy nature of SQL, it's recommended to use a tool to deal with that. Promises, Generators, Streamline, Q, Async, etc. are all good options.
 
 
 # Documentation
