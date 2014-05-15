@@ -12,8 +12,7 @@ assert = (a, b, number) ->
 		console.log ">"+number+" FAILED!! "+a+" !== "+b
 		throw new Error "Test "+number
 
-oracleConnectData = JSON.parse (fs.readFileSync __dirname+"/node_modules/oracle-orm/testDB.json").toString("utf8")
-# oracleConnectData = JSON.parse (fs.readFileSync __dirname+"/../testDB.json").toString("utf8")
+oracleConnectData = JSON.parse (fs.readFileSync __dirname+"/../testDB.json").toString("utf8")
 
 ORM = require "oracle-orm"
 
