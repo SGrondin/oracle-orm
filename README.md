@@ -18,9 +18,7 @@ Don't install from npm yet!
 
 First, make sure libaio is installed: `sudo apt-get install libaio1` or `sudo yum install libaio`
 
-Then, go to the [Oracle driver page](http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html) and click on Linux x86-64.
-
-Download `instantclient-basic-linux.x64-12.1.***.zip` and `instantclient-sdk-linux.x64-12.1.***.zip`.
+Then, go to the [Oracle driver page](http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html) and select your architecture. Download `instantclient-basic-linux.x64-12.1.***.zip` and `instantclient-sdk-linux.x64-12.1.***.zip`.
 
 Unzip both into `YOUR_PROJECT/instantclient_12_1`. It won't work if the driver can't be found.
 

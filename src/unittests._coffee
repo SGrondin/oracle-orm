@@ -59,7 +59,13 @@ try
 	rows = models.PERSON.all _
 	assert rows.length, 5, "3"
 
-	rows = models.PERSON.get {AAA:">35"}, ["AAA"], _
+	try
+		ok = false
+		rows = models.PERSON.get {AAA:">35"}, ["AAA"], _
+	catch e
+		ok = true
+	finally assert ok, true, "3.1"
+	rows = models.PERSON.getUnsafe {AAA:">35"}, ["AAA"], _
 	assert rows.length, 2, "4"
 
 	assert rows[0].connection?.execute?, true, "5"
@@ -70,7 +76,13 @@ try
 	assert rows[1].data.BBB, null, "10"
 
 	# UPDATE
-	models.PERSON.update {AAA:-100}, {BBB:"='abc'"}, _
+	try
+		ok = false
+		models.PERSON.updateUnsafe {AAA:-100}, {BBB:"abc"}, _
+	catch e
+		ok = true
+	finally assert ok, true, "10.1"
+	models.PERSON.update {AAA:-100}, {BBB:"abc"}, _
 	rows = models.PERSON.get {}, ["F_ORDER_ID", "AAA"], _
 
 	assert rows[0].data.AAA, -100, "11"
@@ -79,6 +91,7 @@ try
 	assert rows[0].deleted, false, "12"
 	rows[0].del _
 	assert rows[0].deleted, true, "13"
+	# Can't delete what's already been deleted
 	try
 		ok = false
 		rows[0].del _
@@ -127,14 +140,28 @@ try
 	##### Run simple tests on ORDER #####
 	orders = models.ORDER.get {}, ["-NAME"], _
 	assert orders[0].data.NAME, "grapefruit", "30"
-	models.ORDER.update {NOTE:"nothing"}, {ORDER_ID:">=3"}, _
+	try
+		ok = false
+		models.ORDER.update {NOTE:"nothing"}, {ORDER_ID:">=3"}, _
+	catch e
+		ok = true
+	finally assert ok, true, "30.1"
+	models.ORDER.updateUnsafe {NOTE:"nothing"}, {ORDER_ID:">=3"}, _
+
+
 
 	assert (orders.filter (a) -> a.data.NOTE == null).length, 7, "31"
 	orders.forEach_ _, -1, (_, a) -> a.sync _
 	assert (orders.filter (a) -> a.data.NOTE == null).length, 2, "32"
 
 	assert (models.ORDER.count _), 7, "33"
-	models.ORDER.del {ORDER_ID:"=4"}, _
+	try
+		ok = false
+		models.ORDER.del {ORDER_ID:"=4"}, _
+	catch e
+		ok = true
+	finally assert ok, true, "33.1"
+	models.ORDER.del {ORDER_ID:"4"}, _
 	assert (models.ORDER.count _), 6, "34"
 
 	orders = orders.map_ _, 1, (_, a) -> if not a.deleted? then a.sync _ else a
@@ -143,6 +170,8 @@ try
 	orders[4].data.NOTE = "APPLE"
 	assert orders[4].isDirty(), true, "36"
 	orders[4].save _
+	apple = orm.execute """SELECT * FROM "ORDER" WHERE "ORDER_ID" = 3""", [], _
+	assert apple[0].NOTE, "APPLE", "36.1"
 	assert orders[4].isDirty(), false, "37"
 
 	orm.execute """DELETE FROM "ORDER" WHERE "ORDER_ID"=7""", [], _
@@ -168,6 +197,13 @@ try
 	orders[4].del _
 	assert orders[4].deleted, true, "45"
 
+	# Can't delete due to foreign key
+	try
+		ok = false
+		orders[2].del _
+	catch e
+		ok = true
+	finally assert ok, true, "45.1"
 
 	# EMPTY and DROP PERSON
 	models.PERSON.empty _

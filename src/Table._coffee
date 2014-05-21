@@ -10,7 +10,11 @@ class Table
 
 	get: (where={}, orderBy=null, _) ->
 		query = new Query @connection, @
-		query.select where, orderBy, [], _
+		query.select where, orderBy, _
+
+	getUnsafe: (where={}, orderBy=null, _) ->
+		query = new Query @connection, @, false
+		query.select where, orderBy, _
 
 	all: (_) -> @get null, null, _
 
@@ -18,8 +22,16 @@ class Table
 		query = new Query @connection, @
 		query.update columns, where, _
 
+	updateUnsafe: (columns={}, where={}, _) ->
+		query = new Query @connection, @, false
+		query.update columns, where, _
+
 	del: (where={}, _) ->
 		query = new Query @connection, @
+		query.del where, _
+
+	delUnsafe: (where={}, _) ->
+		query = new Query @connection, @, false
 		query.del where, _
 
 	count: (_) ->

@@ -2,29 +2,36 @@ Row = require "./Row"
 types = require "./types"
 helpers = require "./helpers"
 
-class Query
-	constructor: (@connection, @table) ->
+getOrderBy = (orderBy) ->
+	if orderBy? and orderBy.length > 0
+		orderBy = orderBy.map (a) ->
+			if a[0] == "-"
+				"\""+a[1..]+"\" DESC"
+			else
+				"\""+a+"\" ASC"
+		"ORDER BY "+orderBy.join ", "
+	else
+		""
 
-	select: (where, orderBy, joins, _) ->
-		order = if orderBy? and orderBy.length > 0
-			orderBy = orderBy.map (a) ->
-				if a[0] == "-"
-					"\""+a[1..]+"\" DESC"
-				else
-					"\""+a+"\" ASC"
-			"ORDER BY "+orderBy.join ", "
+class Query
+	constructor: (@connection, @table, safe=true) ->
+		@getWhere = if safe
+			(obj) ->
+				helpers.getWhere obj, "="
 		else
-			""
-		(@connection.execute "SELECT * FROM \""+@table.name+"\" WHERE "+helpers.getWhere(where)+" "+order, [], _).map (line) =>
+			helpers.getWhereNoPlaceholders
+
+	select: (where, orderBy, _) ->
+		order = getOrderBy orderBy
+		[where, values] = @getWhere where
+		(@connection.execute "SELECT * FROM \""+@table.name+"\" WHERE "+where+" "+order, values, _).map (line) =>
 			new Row @connection, @table, line
 
 	update: (pairs, where, _) ->
-		@connection.execute "UPDATE \""+@table.name+"\" SET "+(helpers.getListPlaceholders pairs, "=").join(", ")+
-			" WHERE "+(helpers.getWhere where), (helpers.getValues pairs), _
-
-	updateWithEquals: (pairs, where, _) ->
-		@connection.execute "UPDATE \""+@table.name+"\" SET "+(helpers.getListPlaceholders pairs, "=").join(", ")+
-			" WHERE "+(helpers.getWhere where, "="), (helpers.getValues pairs), _
+		[update, values1] = helpers.getWhere pairs, "="
+		[where, values2] = @getWhere where
+		@connection.execute "UPDATE \""+@table.name+"\" SET "+update.join(", ")+
+			" WHERE "+where.join(" AND "), values1.concat(values2), _
 
 	insert: (pairs, _) ->
 		columns = ("\""+col+"\"" for col in Object.keys pairs)
@@ -33,6 +40,7 @@ class Query
 		@connection.execute "INSERT INTO \""+@table.name+"\"("+columns.join(", ")+") VALUES("+placeholders+")", values, _
 
 	del: (where, _) ->
-		@connection.execute "DELETE FROM \""+@table.name+"\" WHERE "+helpers.getWhere(where), [], _
+		[where, values] = @getWhere where
+		@connection.execute "DELETE FROM \""+@table.name+"\" WHERE "+where.join(" AND "), values, _
 
 module.exports = Query
