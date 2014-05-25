@@ -22,7 +22,9 @@ Then, go to the [Oracle driver page](http://www.oracle.com/technetwork/database/
 
 Unzip both into `YOUR_PROJECT/instantclient_12_1`. It won't work if the driver can't be found.
 
-Finally, `npm install oracle-orm` in your project's directory. The install scripts take care of everything.
+Run `npm install oracle-orm` in your project's directory. It'll prompt for sudo because the Oracle driver needs environment variables.
+
+Finally, run `source /etc/environment` (or just logout and log back in). All done!
 
 
 #### Run the tests

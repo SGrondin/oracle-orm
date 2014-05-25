@@ -2,7 +2,7 @@
 
 module=$(pwd)
 
-if [[ -f $module/driver/installed ]]; then
+if [[ $ORACLE_ORM_INSTALLED == 'TRUE' ]]; then # Stop the npm install recursion
 	exit
 fi
 if [[ ! -d $module/../../instantclient_12_1 ]]; then
@@ -20,8 +20,15 @@ ln -s libclntsh.so.12.1 libclntsh.so
 popd > /dev/null
 
 sleep 5 # Make sure sudo prompt has time to pop up
+echo 'oracle-orm needs sudo to set the Oracle environment variables.'
 echo $OCI_HOME/ | sudo tee /etc/ld.so.conf.d/oracle_instant_client.conf
 sudo ldconfig
 
-touch driver/installed
+# Write to /etc/environment because instantclient needs it
+nlslang=$(cat /etc/environment | grep "^NLS_LANG=" | wc -l)
+if [[ $nlslang == 0 ]]; then
+	echo 'NLS_LANG='$NLS_LANG | sudo tee -a /etc/environment > /dev/null
+fi
+
+export ORACLE_ORM_INSTALLED=TRUE # Stop the npm install recursion
 npm install # DevDependencies
