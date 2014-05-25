@@ -224,6 +224,33 @@ try
 
 	console.log "\n\nAll tests passed!\n\n"
 
+
+	setTimeout _, 1500
+
+	console.log "Now testing character encoding...\n"
+
+	try
+		orm.execute "DROP TABLE ORACLE_ORM_TEST_UTF", [], _
+	catch e
+	con orm.execute "CREATE TABLE ORACLE_ORM_TEST_UTF(AAA NUMBER, BBB VARCHAR2(20))", [], _
+
+	dbParams = orm.execute "SELECT * from NLS_DATABASE_PARAMETERS", [], _
+	sessionParams = orm.execute "SELECT * FROM NLS_SESSION_PARAMETERS", [], _
+	console.log "\n\nDATABASE CHARACTER ENCODING:"
+	console.log dbParams.filter((a) -> a.PARAMETER in ["NLS_NCHAR_CHARACTERSET", "NLS_CHARACTERSET"]).map((a) -> a.PARAMETER+":   "+a.VALUE).join "\n"
+	console.log "NLS_LANG env variable:   "+process.env.NLS_LANG
+	console.log "NLS_LANG session variable:   "+sessionParams.filter((a) -> a.PARAMETER == "NLS_LANG")[0]?.map((a) -> a.PARAMETER+":   "+a.VALUE)+"\n\n"
+
+	utfString = "éêèÉÊÈ 日本"
+	orm.execute "INSERT INTO ORACLE_ORM_TEST_UTF(AAA, BBB) VALUES (123, :1)", [utfString], _
+	utfData = orm.execute "SELECT * FROM ORACLE_ORM_TEST_UTF", [], _
+
+	assert utfData[0].BBB, utfString, "50"
+
+	orm.execute "DROP TABLE ORACLE_ORM_TEST_UTF", [], _
+
+	console.log "\n\nCharacter encoding is all good!\n\n"
+
 catch err
 	con err
 	stack err

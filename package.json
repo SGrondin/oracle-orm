@@ -1,6 +1,6 @@
 {
   "name": "oracle-orm",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "An Oracle ORM that actually works",
   "main": "lib/index.js",
   "scripts": {
@@ -25,6 +25,6 @@
   "devDependencies":{
     "coffee-script": "1.7.x",
     "streamline": "0.10.x",
-    "oracle":"*"
+    "oracle":"0.3.x"
   }
 }
