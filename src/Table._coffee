@@ -3,7 +3,6 @@ Query = require "./Query"
 
 class Table
 	constructor: (@connection, @name, @columns, @primary=[]) ->
-		con @columns
 
 	validateColummns: (columnNames=[]) ->
 		invalids = columnNames.map((c) => if not @columns[c]? then c else null).filter((a) -> a?)
