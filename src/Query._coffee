@@ -37,7 +37,12 @@ class Query
 		columns = ("\""+col+"\"" for col in Object.keys pairs)
 		values = helpers.getValues pairs
 		placeholders = (helpers.getPlaceholders values.length).join ", "
-		@connection.execute "INSERT INTO \""+@table.name+"\"("+columns.join(", ")+") VALUES("+placeholders+")", values, _
+		primaries = @table.primary.map((a) -> a.name).join ", "
+		returnPlaceholders = (helpers.getPlaceholders @table.primary.length).join ", "
+		params = [].concat values, (new @connection.driver.OutParam(types.typeToOCCI[i.type]) for i in @table.primary)
+
+		@connection.execute "INSERT INTO \""+@table.name+"\"("+columns.join(", ")+") VALUES("+placeholders+") RETURNING "+primaries+" INTO "+
+			returnPlaceholders, params, _
 
 	del: (where, _) ->
 		[where, values] = @getWhere where

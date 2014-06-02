@@ -1,6 +1,6 @@
 placeCounter = 0
 getPlaceholders = (nb) ->
-	(":"+(placeCounter++) for i in [placeCounter..(placeCounter+nb-1)])
+	(":"+(placeCounter++ % 100) for i in [1..nb])
 
 getWhere = (pairs, separator="") ->
 	where = (getListPlaceholders pairs, separator)
@@ -30,7 +30,7 @@ getValues = (obj) ->
 getPKPairs = (row) ->
 	pairs = {}
 	row.table.primary.forEach (c) ->
-		pairs[c] = row.backdata[c]
+		pairs[c.name] = row.backdata[c.name]
 	pairs
 
 
