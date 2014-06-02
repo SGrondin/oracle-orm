@@ -7,9 +7,9 @@ There's only one other ORM for Node.js that supports Oracle. It says a lot about
 
 The other ORM has over a year of open issues on Github, it sometimes generates invalid Oracle SQL statements and does absurd things like creating a table `PEOPLE` for a model named `PERSON` (and `PEOPLES` for `PEOPLE`, ha). I don't like ORMs, I'm forced to use one for a project. I don't want my tools to do unexpected things in the database and that other ORM is full of surprises.
 
-This ORM only supports the features I need. It doesn't support connection pooling, error recovery and all sorts of basic things you'd expect from an ORM. If you want those features added, open an issue or send a pull request.
+Oracle-ORM is safe against SQL injections.
 
-It's not even SQL injection-safe, for the most part.
+This ORM only supports the features I need. It doesn't support connection pooling, error recovery and all sorts of basic things you'd expect from an ORM. If you want those features added, open an issue or send a pull request.
 
 
 # Install

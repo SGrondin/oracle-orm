@@ -15,6 +15,7 @@ assert = (a, b, number) ->
 oracleConnectData = JSON.parse (fs.readFileSync __dirname+"/../testDB.json").toString("utf8")
 
 ORM = require "oracle-orm"
+# ORM = require "./index"
 
 try
 	orm = new ORM oracleConnectData, true, _
@@ -61,7 +62,7 @@ try
 
 	try
 		ok = false
-		rows = models.PERSON.get {AAA:">35"}, ["AAA"], _
+		rows = models.PERSON {AAA:">35"}, ["AAA"], _
 	catch e
 		ok = true
 	finally assert ok, true, "3.1"
@@ -204,6 +205,20 @@ try
 	catch e
 		ok = true
 	finally assert ok, true, "45.1"
+
+	# Test column validation
+	try
+		ok = false
+		models.ORDER.add {ORDER_ID:100, NAME: "zebra", SOMETHING:123}, _
+	catch e
+		ok = true
+	finally assert ok, true, "45.2"
+	try
+		ok = false
+		models.ORDER.get {}, ["-NAMEAAA"], _
+	catch e
+		ok = true
+	finally assert ok, true, "45.3"
 
 	# EMPTY and DROP PERSON
 	models.PERSON.empty _
